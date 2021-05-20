@@ -1,0 +1,12 @@
+# Proprietary Data
+data.csv
+data_with_siccd.csv
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
