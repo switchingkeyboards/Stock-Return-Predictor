@@ -13,3 +13,9 @@ pip install -r requirements.txt
 ```
 python3 helpers/export_permno.py
 ```
+
+## Data preprocessing and cleaning
+
+```
+python3 helpers/preprocessing.py
+```
