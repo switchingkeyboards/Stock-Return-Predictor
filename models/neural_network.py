@@ -6,6 +6,12 @@ from tensorflow.keras import layers
 
 raw = input("Path to CSV dataset: ") 
 df = pd.read_csv(raw)
+
+ind_train = df[df.year.isin(range(1980, 2000))].index  # 1980 to 1999
+ind_test = df[df.year.isin(range(2000, 2020))].index  # 2000 to 2019
+
+df_train = df.loc[ind_train, :].copy().reset_index(drop=True)
+df_test = df.loc[ind_test, :].copy().reset_index(drop=True)
   
 feats_not_to_use=["permno","year","month","next_ret","pe_op_dil"]
 feats_to_use = [feat for feat in df.columns if feat not in feats_not_to_use]
