@@ -1,8 +1,6 @@
 # Proprietary Data
-data.csv
-data_with_siccd.csv
-data/permno.txt
-data/siccd.csv
+!data/siccd.example.csv
+data/*
 
 # Environments
 .env
