@@ -10,4 +10,6 @@ pip install -r requirements.txt
 
 ## Adding SICCD data to dataset
 
-Feed WRDS dataset into `/data`, then run `python3 helpers/export_permno.py`
+```
+python3 helpers/export_permno.py
+```

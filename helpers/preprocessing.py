@@ -4,7 +4,8 @@ Data Preprocessing
 
 import pandas as pd
 
-df = pd.read_csv("data/data_with_siccd.csv")
+raw = input("Path to CSV dataset: ") 
+df = pd.read_csv(raw)
 
 df.next_ret = pd.to_numeric(df.next_ret,errors='coerce')
 df = df[~np.isnan(df.next_ret)].reset_index(drop=True)
@@ -19,4 +20,4 @@ ind_test = df[df.year.isin(range(2000,2020))].index # 2000 to 2019
 df_train = df.loc[ind_train,:].copy().reset_index(drop=True)
 df_test = df.loc[ind_test,:].copy().reset_index(drop=True)
   
-result.to_csv(r'data_with_siccd_cleaned.csv')
+result.to_csv(r'data_preprocessed.csv')

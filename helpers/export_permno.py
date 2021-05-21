@@ -1,9 +1,12 @@
 import pandas as pd
 import numpy as np
 
-df = pd.read_csv(r'data/data.csv')
+raw = input("Path to CSV dataset: ") 
+df = pd.read_csv(raw)
+
 # Export txt file for permno to siccd conversion on WRDS
 # np.savetxt(r'permno.txt', df['PERMNO'], fmt='%i')
+
 df_siccd = pd.read_csv(r'data/siccd.csv')
 
 

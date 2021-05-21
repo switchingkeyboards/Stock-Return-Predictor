@@ -1,6 +1,7 @@
 # Proprietary Data
 data.csv
 data_with_siccd.csv
+data_with_siccd.csv
 
 # Environments
 .env
