@@ -4,7 +4,7 @@ import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras import layers
 
-raw = input("Path to CSV dataset: ") 
+raw = input("Path to preprocessed CSV dataset: ") 
 df = pd.read_csv(raw)
 
 ind_train = df[df.year.isin(range(1980, 2000))].index  # 1980 to 1999
