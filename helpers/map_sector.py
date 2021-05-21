@@ -1,9 +1,10 @@
 import pandas as pd
 import numpy as np
+import os
 
 raw = input("Path to CSV dataset: ") 
 df = pd.read_csv(raw)
-df_siccd = pd.read_csv(r'data/siccd.csv')
+df_siccd = pd.read_csv(r'data/siccd.example.csv')
 
 
 def get_sector(x):
@@ -37,7 +38,8 @@ def get_sector(x):
 df_siccd['SECTOR'] = [get_sector(siccd) for siccd in df_siccd['SICCD']]
 result = pd.concat([df, df_siccd], axis=1, join='inner')
 
-print(result.groupby(by="SECTOR")['SECTOR'].agg('count'))
+# print(result.groupby(by="SECTOR")['SECTOR'].agg('count'))
+
 """
 SECTOR
 Finance, Insurance, Real Estate       13980
@@ -51,4 +53,13 @@ Unclassified                           1237
 Wholesale Trade                        3044
 """
 
-result.to_csv(r'data/data_with_siccd.csv')
+dir = "data/sectors/"
+if not os.path.exists(dir):
+    os.makedirs(dir)
+
+for sector, data in result.groupby(by="SECTOR"):
+    if sector != "Unclassified":
+        filename = dir + sector.lower().replace(",", "").replace("& ", "").replace(" ", "_")
+        data.to_csv("{}.csv".format(filename))
+
+# result.to_csv(r'data/data_with_siccd.csv')
