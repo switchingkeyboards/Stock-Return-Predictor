@@ -15,4 +15,4 @@ df['divyield'] = df['divyield'].str.replace('%', '').astype('float')
 
 df.columns = [name.lower() for name in df.columns]
 
-df.to_csv(r'data_preprocessed.csv')
+df.to_csv(r'data/data_preprocessed.csv')

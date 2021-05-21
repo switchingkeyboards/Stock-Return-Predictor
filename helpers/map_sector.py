@@ -51,4 +51,4 @@ Unclassified                           1237
 Wholesale Trade                        3044
 """
 
-result.to_csv(r'data_with_siccd.csv')
+result.to_csv(r'data/data_with_siccd.csv')

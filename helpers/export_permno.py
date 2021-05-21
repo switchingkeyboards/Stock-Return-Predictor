@@ -5,4 +5,4 @@ raw = input("Path to CSV dataset: ")
 df = pd.read_csv(raw)
 
 # Export txt file for permno to siccd conversion on WRDS
-np.savetxt(r'permno.txt', df['PERMNO'], fmt='%i')
+np.savetxt(r'data/permno.txt', df['PERMNO'], fmt='%i')
