@@ -10,7 +10,7 @@ pip install -r requirements.txt
 
 ## Adding SICCD data to dataset
 
-Export `permno.txt` from data frame
+Export `permno.txt` from dataframe
 ```
 python3 helpers/export_permno.py
 ```
