@@ -62,4 +62,4 @@ for sector, data in result.groupby(by="SECTOR"):
         filename = dir + sector.lower().replace(",", "").replace("& ", "").replace(" ", "_")
         data.to_csv("{}.csv".format(filename))
 
-# result.to_csv(r'data/data_with_siccd.csv')
+result.to_csv(dir + 'all.csv')
