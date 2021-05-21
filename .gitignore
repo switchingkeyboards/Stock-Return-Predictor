@@ -1,7 +1,7 @@
 # Proprietary Data
 data/*
 !data/siccd.example.csv
-
+!data/sectors/
 
 # Environments
 .env
