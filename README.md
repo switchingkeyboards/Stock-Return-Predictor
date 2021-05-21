@@ -1,3 +1,7 @@
+# Stock Return Predictor
+
+Spin up virtual environment:
+
 ```
 python3 -m venv venv
 source venv/bin/activate
