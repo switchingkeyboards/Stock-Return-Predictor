@@ -4,7 +4,8 @@ import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras import layers
 
-df = pd.read_csv("data/data_with_siccd_cleaned.csv")
+raw = input("Path to CSV dataset: ") 
+df = pd.read_csv(raw)
   
 feats_not_to_use=["permno","year","month","next_ret","pe_op_dil"]
 feats_to_use = [feat for feat in df.columns if feat not in feats_not_to_use]
