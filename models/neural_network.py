@@ -13,17 +13,17 @@ ind_test = df[df.year.isin(range(2000, 2020))].index  # 2000 to 2019
 df_train = df.loc[ind_train, :].copy().reset_index(drop=True)
 df_test = df.loc[ind_test, :].copy().reset_index(drop=True)
   
-feats_not_to_use=["permno","year","month","next_ret","pe_op_dil"]
+feats_not_to_use=["permno", "year", "month", "next_ret", "pe_op_dil"]
 feats_to_use = [feat for feat in df.columns if feat not in feats_not_to_use]
 target = 'next_ret'
-feats = ["mmt6","divyield","gprof"]
+feats = ["mmt6", "divyield", "gprof"]
 
 """
 Data Normalization
 """
 
 def normalize(series):
-  return (series-series.mean(axis=0))/series.std(axis=0)
+  return (series - series.mean(axis=0)) / series.std(axis=0)
 
 mean = df_train[feats].mean(axis=0)
 df_train[feats] = df_train[feats].fillna(mean)      
@@ -41,6 +41,11 @@ Create TensorFlow Train and Test Datasets
 
 train_dataset = tf.data.Dataset.from_tensor_slices((data_train, df_train[target].values))
 test_dataset = tf.data.Dataset.from_tensor_slices((data_test, df_test[target].values))
+
+print("_" * 65)
+print("First five elements of train dataset:")
+for feat, targ in train_dataset.take(5):
+  print ('Features: {}, Target: {}'.format(feat, targ))
 
 """
 Constructing the Model
@@ -63,11 +68,13 @@ def build_model():
 
 model = build_model()
 
+# Initialize model weights to random values
 weights = model.weights
+print("_" * 65)
 print(weights)
 
 np.random.seed(12345)
-w = [np.random.uniform(-0.01,0.01,size = (nfeats,nhid)),np.random.uniform(-0.01,0.01,size = nhid),np.random.uniform(-0.01,0.01,size = (nhid,1)),np.random.uniform(-0.01,0.01,size = 1)]
+w = [np.random.uniform(-0.01, 0.01, size=(nfeats,nhid)), np.random.uniform(-0.01, 0.01, size=nhid), np.random.uniform(-0.01, 0.01, size=(nhid,1)), np.random.uniform(-0.01, 0.01, size=1)]
 model.set_weights(w)
 
 """
@@ -82,13 +89,16 @@ Training the Model
 
 model.fit(train_dataset.batch(1), epochs=1)
 
+# Trained model weights
 weights = model.weights
+print("_" * 65)
 print(weights)
 
 """
 Make Predictions
 """
 
+# Larger batch size (100) for faster predictions
 test_predictions = model.predict(test_dataset.batch(100)).flatten()
 
 """
@@ -100,4 +110,5 @@ def R2(y, y_hat):
   return R2
 
 R2_Val = R2(df_test[target].values,test_predictions)
+print("_" * 65)
 print(R2_Val)
