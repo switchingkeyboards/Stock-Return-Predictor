@@ -2,9 +2,14 @@ import pandas as pd
 import numpy as np
 import os
 
-raw = input("Path to CSV dataset: ") 
-df = pd.read_csv(raw)
-df_siccd = pd.read_csv(r'data/siccd.example.csv')
+# raw = input("Path to CSV dataset: ")
+# df = pd.read_csv(raw)
+
+# siccd = input("Path to SICCD CSV: ")
+# df_siccd = pd.read_csv(siccd)
+
+df = pd.read_csv(r'data/preprocessed.csv')
+df_siccd = pd.read_csv(r'data/siccd.csv')
 
 
 def get_sector(x):
@@ -36,23 +41,10 @@ def get_sector(x):
 
 
 df_siccd['SECTOR'] = [get_sector(siccd) for siccd in df_siccd['SICCD']]
-df.pop("PERMNO")
+df_siccd.pop("PERMNO")
 result = pd.concat([df, df_siccd], axis=1, join='inner')
 
 # print(result.groupby(by="SECTOR")['SECTOR'].agg('count'))
-
-"""
-SECTOR
-Finance, Insurance, Real Estate       13980
-Manufacturing                        113725
-Mining                                 6468
-Public Administration                  8816
-Retail Trade                           5314
-Services                              50478
-Transportation & Public Utilities     24033
-Unclassified                           1237
-Wholesale Trade                        3044
-"""
 
 dir = "data/sectors/"
 if not os.path.exists(dir):
@@ -61,6 +53,6 @@ if not os.path.exists(dir):
 for sector, data in result.groupby(by="SECTOR"):
     if sector != "Unclassified":
         filename = dir + sector.lower().replace(",", "").replace("& ", "").replace(" ", "_")
-        data.to_csv("{}.csv".format(filename))
+        data.to_csv("{}.csv".format(filename), index=False)
 
-result.to_csv(dir + 'all.csv')
+result.to_csv(dir + 'all.csv', index=False)

@@ -10,7 +10,8 @@ full_paths, names = [], []
 
 for f in os.listdir(dir):
     if os.path.isfile(os.path.join(dir, f)) and f.endswith('.csv'):
-        # if (f == "mining.csv"):
+        if (f != "services.csv"):
+            continue
         full_paths.append(os.path.join(dir, f))
         names.append(f.replace('.csv', ''))
 
@@ -21,5 +22,5 @@ for i, path in enumerate(full_paths):
     result.append(R2)
     # print(weights[0].numpy())
 
-df = pd.DataFrame(data=result, index=names, columns=['R2'])
+df = pd.DataFrame(data={'Sector': names, 'R2': result})
 df.to_csv('result.csv', index=False)

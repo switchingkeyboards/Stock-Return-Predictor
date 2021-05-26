@@ -18,7 +18,7 @@ def train_nn(csv):
     df_test = df.loc[ind_test, :].copy().reset_index(drop=True)
 
     feats_not_to_use = ["permno", "year", "month", "next_ret",
-                        "pe_op_dil", "date", "SICCD", "COMNAM", "TSYMBOL", "SECTOR"]
+                        "pe_op_dil", "DATE", "COMNAM", "TICKER", "SICCD",  "SECTOR"]
     feats = [feat for feat in df.columns if feat not in feats_not_to_use]
     # feats = ["mmt6", "divyield", "gprof"]
 
