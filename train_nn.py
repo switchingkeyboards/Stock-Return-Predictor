@@ -10,17 +10,16 @@ full_paths, names = [], []
 
 for f in os.listdir(dir):
     if os.path.isfile(os.path.join(dir, f)) and f.endswith('.csv'):
-        if (f != "services.csv"):
-            continue
+        # if (f != "services.csv"):
+        #     continue
         full_paths.append(os.path.join(dir, f))
         names.append(f.replace('.csv', ''))
 
-result = []
+R2s = []
 
-for i, path in enumerate(full_paths):
-    weights, feats, R2 = train_nn(path)
-    result.append(R2)
-    # print(weights[0].numpy())
+for path in full_paths:
+    feature_importances, R2 = train_nn(path)
+    R2s.append(R2)
 
-df = pd.DataFrame(data={'Sector': names, 'R2': result})
+df = pd.DataFrame(data={'Sector': names, 'R2': R2s, **feature_importances})
 df.to_csv('result.csv', index=False)

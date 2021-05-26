@@ -22,7 +22,7 @@ Export `permno.txt` from dataframe
 python3 helpers/export_permno.py
 ```
 
-Call WRDS service to convert `permno` into SICCD code.
+Call [WRDS service](https://wrds-web.wharton.upenn.edu/wrds/ds/crsp/stock_a/names.cfm) to convert `permno` into SICCD code.
 Read the resulting `SICCD.csv` into helper to map sector information to dataframe.
 
 ```

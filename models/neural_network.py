@@ -3,12 +3,14 @@
 import numpy as np
 import pandas as pd
 import tensorflow as tf
+import eli5
+# from eli5.sklearn import PermutationImportance
+from eli5.permutation_importance import get_score_importances
 from tensorflow import keras
 from tensorflow.keras import layers
 
 
 def train_nn(csv):
-    # csv = input("Path to preprocessed CSV dataset: ")
     df = pd.read_csv(csv)
 
     ind_train = df[df.year.isin(range(1980, 2000))].index  # 1980 to 1999
@@ -25,8 +27,8 @@ def train_nn(csv):
     target = 'next_ret'
 
     """
-  Data Normalization
-  """
+    Data Normalization
+    """
 
     def normalize(series):
         return (series - series.mean(axis=0)) / series.std(axis=0)
@@ -42,8 +44,8 @@ def train_nn(csv):
     data_test = df_test[feats].apply(normalize).values
 
     """
-  Create TensorFlow Train and Test Datasets
-  """
+    Create TensorFlow Train and Test Datasets
+    """
 
     train_dataset = tf.data.Dataset.from_tensor_slices(
         (data_train, df_train[target].values))
@@ -56,8 +58,8 @@ def train_nn(csv):
     #   print ('Features: {}, Target: {}'.format(feat, targ))
 
     """
-  Constructing the Model
-  """
+    Constructing the Model
+    """
 
     nfeats = len(feats)
     nhid = 3
@@ -91,14 +93,14 @@ def train_nn(csv):
     model.set_weights(w)
 
     """
-  Inspecting the Model
-  """
+    Inspecting the Model
+    """
 
     model.summary()
 
     """
-  Training the Model
-  """
+    Training the Model
+    """
 
     model.fit(train_dataset.batch(1), epochs=1)
 
@@ -108,15 +110,15 @@ def train_nn(csv):
     # print(weights)
 
     """
-  Make Predictions
-  """
+    Make Predictions
+    """
 
     # Larger batch size (100) for faster predictions
     test_predictions = model.predict(test_dataset.batch(100)).flatten()
 
     """
-  Model Evaluation
-  """
+    Model Evaluation
+    """
 
     def R2(y, y_hat):
         R2 = 1 - np.sum((y - y_hat)**2) / np.sum(y**2)
@@ -126,4 +128,19 @@ def train_nn(csv):
     # print("_" * 65)
     # print(R2_Val)
 
-    return weights, feats, R2_Val
+    def score(X, y):
+        y_pred = model.predict(X)
+        return R2(y, y_pred)
+
+    _, score_decreases = get_score_importances(
+        score, data_test, df_test[target].values)
+
+    feature_importances = np.mean(score_decreases, axis=0)
+
+    importances = {}
+
+    if csv.endswith('all.csv'):
+        for index, fi in enumerate(feature_importances):
+            importances[feats[index]] = fi
+
+    return importances, R2_Val
