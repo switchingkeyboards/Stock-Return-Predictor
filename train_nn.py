@@ -10,16 +10,23 @@ full_paths, names = [], []
 
 for f in os.listdir(dir):
     if os.path.isfile(os.path.join(dir, f)) and f.endswith('.csv'):
-        # if (f != "services.csv"):
+        # if (f != "all.csv"):
         #     continue
         full_paths.append(os.path.join(dir, f))
         names.append(f.replace('.csv', ''))
 
-R2s = []
 
-for path in full_paths:
-    feature_importances, R2 = train_nn(path)
-    R2s.append(R2)
+result = []
 
-df = pd.DataFrame(data={'Sector': names, 'R2': R2s, **feature_importances})
+# Each sector csv file train 5 NN models
+for i, path in enumerate(full_paths):
+    all_importances, all_R2_Val = train_nn(path)
+
+    for j, importance in enumerate(all_importances):
+        importance["sector"] = names[i]
+        importance["R2"] = all_R2_Val[j]
+
+    result = [*result, *all_importances]
+
+df = pd.DataFrame(result)
 df.to_csv('result.csv', index=False)

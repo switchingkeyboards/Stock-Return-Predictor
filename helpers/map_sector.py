@@ -42,7 +42,7 @@ def get_sector(x):
 
 df_siccd['SECTOR'] = [get_sector(siccd) for siccd in df_siccd['SICCD']]
 df_siccd.pop("PERMNO")
-result = pd.concat([df, df_siccd], axis=1, join='inner')
+result = pd.concat([df, df_siccd], axis=1, join='outer')
 
 # print(result.groupby(by="SECTOR")['SECTOR'].agg('count'))
 
